@@ -1,0 +1,121 @@
+/* Products.css */
+
+.products-container {
+    padding: 2rem;
+    background-color: #f4f6f8;
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .products-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .products-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #253741;
+  }
+  
+  .add-product-btn {
+    padding: 0.5rem 1rem;
+    background-color: #00BF63;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-product-btn:hover {
+    background-color: #02994f;
+  }
+  
+  .product-form {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    background-color: #ffffff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  .product-form input {
+    padding: 0.6rem;
+    border: 1px solid #7E90A4;
+    border-radius: 6px;
+    flex: 1;
+    font-size: 1rem;
+    color: #253741;
+  }
+  
+  .save-product-btn {
+    background-color: #00BF63;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.6rem 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .save-product-btn:hover {
+    background-color: #02994f;
+  }
+  
+  .products-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .products-table th,
+  .products-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .products-table th {
+    background-color: #5B7D95;
+    font-weight: 600;
+    color: #ffffff;
+  }
+  
+  .products-table td {
+    color: #253741;
+  }
+  
+  .products-table tr:hover {
+    background-color: #f1f5f9;
+  }
+  
+  .low-stock {
+    color: #d97706;
+    font-weight: bold;
+    background-color: #fff7ed;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+  .low-stock {
+    color: orange;
+    font-weight: bold;
+  }
+  
+  .expired {
+    color: red;
+    font-weight: bold;
+    margin-left: 5px;
+  }
+  
+  

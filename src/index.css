@@ -1,13 +1,160 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Updated CSS with custom color theme */
+
+:root {
+  --primary-color: #253741;
+  --secondary-color: #5B7D95;
+  --accent-color: #cac7c7;
+  --text-muted: #7E90A4;
+  --font-color: #ffffff;
+  --bg-light: #f7f9fa;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Sidebar */
+.sidebar {
+  width: 200px;
+  background-color: var(--primary-color);
+  color: var(--font-color);
+  height: 100vh;
+  padding: 20px;
+  position: fixed;
+}
+
+.sidebar h2 {
+  font-size: 1.2rem;
+  color: var(--accent-color);
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.sidebar ul li {
+  margin: 15px 0;
+}
+
+.sidebar ul li a {
+  color: var(--font-color);
+  text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+  color: var(--accent-color);
+}
+
+/* Products */
+.products-container {
+  background-color: var(--bg-light);
+  padding: 20px;
+  color: var(--primary-color);
+}
+
+.products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.products-title {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+}
+
+.add-product-btn {
+  background-color: var(--accent-color);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.add-product-btn:hover {
+  background-color: var(--secondary-color);
+}
+
+.products-table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.products-table th,
+.products-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.products-table th {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Shared Table Styles for Sales, Purchases, Debts, Clients, Notifications, Suppliers */
+.shared-container {
+  background-color: var(--bg-light);
+  padding: 20px;
+  color: var(--primary-color);
+}
+
+.shared-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.shared-title {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+}
+
+.shared-table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.shared-table th,
+.shared-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.shared-table th {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Specific Page Overrides if needed */
+.sales-container,
+.purchases-container,
+.debts-container,
+.clients-container,
+.notifications-container,
+.suppliers-container {
+  composes: shared-container;
+}
+
+.sales-title,
+.purchases-title,
+.debts-title,
+.clients-title,
+.notifications-title,
+.suppliers-title {
+  composes: shared-title;
+}
+
+.sales-table,
+.purchases-table,
+.debts-table,
+.clients-table,
+.notifications-table,
+.suppliers-table {
+  composes: shared-table;
+}
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
