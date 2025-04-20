@@ -7,11 +7,17 @@ function Sales() {
     { id: 1, name: 'Samsung Galaxy A14', stock: 23, price: 180000 },
     { id: 2, name: 'iPhone 12 Pro', stock: 7, price: 600000 },
     { id: 3, name: 'Tecno Spark 10', stock: 15, price: 120000 },
+    { id: 4, name: 'pixel Spark 10', stock: 31, price: 120000 },
+    { id: 5, name: 'infinix Spark 10', stock: 30, price: 120000 },
   ]);
 
   const [sales, setSales] = useState([]);
-  const [newSale, setNewSale] = useState({ productId: '', quantity: 1 });
-  const [showForm, setShowForm] = useState(false); // NEW STATE
+  const [newSale, setNewSale] = useState({
+    productId: '',
+    quantity: 1,
+    paymentMethod: 'Cash',
+  });
+  const [showForm, setShowForm] = useState(false);
 
   const handleInputChange = (e) => {
     setNewSale({ ...newSale, [e.target.name]: e.target.value });
@@ -27,11 +33,12 @@ function Sales() {
       productName: product.name,
       quantity,
       total,
+      paymentMethod: newSale.paymentMethod,
     };
 
     setSales([...sales, saleRecord]);
-    setNewSale({ productId: '', quantity: 1 });
-    setShowForm(false); // Hide the form again after adding
+    setNewSale({ productId: '', quantity: 1, paymentMethod: 'Cash' });
+    setShowForm(false);
   };
 
   const getTotalFormatted = () => {
@@ -48,7 +55,7 @@ function Sales() {
           onClick={() => setShowForm(!showForm)}
           className="toggle-sale-form-btn"
         >
-          {showForm ? 'Hide Form' : '➕ Add New Sale'}
+          {showForm ? 'Cancel' : '➕ Add New Sale'}
         </button>
       </div>
 
@@ -62,6 +69,7 @@ function Sales() {
               </option>
             ))}
           </select>
+
           <input
             type="number"
             name="quantity"
@@ -70,6 +78,15 @@ function Sales() {
             onChange={handleInputChange}
             placeholder="Quantity"
           />
+
+          <select name="paymentMethod" value={newSale.paymentMethod} onChange={handleInputChange}>
+            <option value="Cash">Cash</option>
+            <option value="MOMO">MOMO</option>
+            <option value="Airtel Money">Airtel Money</option>
+            <option value="MOMO Pay">MOMO Pay</option>
+            <option value="Bank">Bank</option>
+          </select>
+
           <span className="total-display">{getTotalFormatted()}</span>
           <button onClick={handleAddSale} className="add-sale-btn">Add Sale</button>
         </div>
@@ -82,6 +99,7 @@ function Sales() {
             <th>Product</th>
             <th>Quantity</th>
             <th>Total (RWF)</th>
+            <th>Payment Method</th>
           </tr>
         </thead>
         <tbody>
@@ -91,6 +109,7 @@ function Sales() {
               <td>{sale.productName}</td>
               <td>{sale.quantity}</td>
               <td>{sale.total.toLocaleString()}</td>
+              <td>{sale.paymentMethod}</td>
             </tr>
           ))}
         </tbody>

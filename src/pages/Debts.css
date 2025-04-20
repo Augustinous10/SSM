@@ -95,3 +95,46 @@
 .toggle-debt-form-btn:hover {
   background-color: #009e54;
 }
+.mark-paid-btn {
+  padding: 5px 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.mark-paid-btn:hover {
+  background-color: #45a049;
+}
+
+.add-debt-btn,
+.mark-paid-btn,
+.edit-btn,
+.delete-btn {
+  padding: 5px 10px;
+  margin: 2px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.add-debt-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.mark-paid-btn {
+  background-color: #4caf50;
+  color: white;
+}
+
+.edit-btn {
+  background-color: #ffc107;
+  color: black;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+}

@@ -11,23 +11,59 @@ function Debts() {
     date: '',
   });
   const [showForm, setShowForm] = useState(false);
+  const [editingId, setEditingId] = useState(null);
 
   const handleInputChange = (e) => {
     setNewDebt({ ...newDebt, [e.target.name]: e.target.value });
   };
 
   const handleAddDebt = () => {
-    const debtRecord = {
-      id: debts.length + 1,
-      name: newDebt.name,
-      phone: newDebt.phone,
-      amount: parseFloat(newDebt.amount),
-      date: newDebt.date,
-    };
+    if (!newDebt.name || !newDebt.amount || !newDebt.date) return;
 
-    setDebts([...debts, debtRecord]);
+    if (editingId) {
+      // Update existing
+      const updatedDebts = debts.map((debt) =>
+        debt.id === editingId ? { ...debt, ...newDebt, amount: parseFloat(newDebt.amount) } : debt
+      );
+      setDebts(updatedDebts);
+      setEditingId(null);
+    } else {
+      // Add new
+      const debtRecord = {
+        id: debts.length + 1,
+        name: newDebt.name,
+        phone: newDebt.phone,
+        amount: parseFloat(newDebt.amount),
+        date: newDebt.date,
+        isPaid: false,
+      };
+      setDebts([...debts, debtRecord]);
+    }
+
     setNewDebt({ name: '', phone: '', amount: '', date: '' });
     setShowForm(false);
+  };
+
+  const handleDelete = (id) => {
+    setDebts(debts.filter((debt) => debt.id !== id));
+  };
+
+  const handleEdit = (debt) => {
+    setNewDebt({
+      name: debt.name,
+      phone: debt.phone,
+      amount: debt.amount,
+      date: debt.date,
+    });
+    setEditingId(debt.id);
+    setShowForm(true);
+  };
+
+  const togglePaidStatus = (id) => {
+    const updatedDebts = debts.map((debt) =>
+      debt.id === id ? { ...debt, isPaid: !debt.isPaid } : debt
+    );
+    setDebts(updatedDebts);
   };
 
   return (
@@ -35,10 +71,14 @@ function Debts() {
       <div className="debts-header">
         <h1 className="debts-title">💸 Debts</h1>
         <button
-          onClick={() => setShowForm(!showForm)}
+          onClick={() => {
+            setShowForm(!showForm);
+            setEditingId(null);
+            setNewDebt({ name: '', phone: '', amount: '', date: '' });
+          }}
           className="toggle-debt-form-btn"
         >
-          {showForm ? 'Cancel' : '➕ Add New Debt'}
+          {showForm ? 'Hide Form' : '➕ Add New Debt'}
         </button>
       </div>
 
@@ -70,9 +110,10 @@ function Debts() {
             name="date"
             value={newDebt.date}
             onChange={handleInputChange}
-            placeholder="Date"
           />
-          <button onClick={handleAddDebt} className="add-debt-btn">Add Debt</button>
+          <button onClick={handleAddDebt} className="add-debt-btn">
+            {editingId ? 'Update Debt' : 'Add Debt'}
+          </button>
         </div>
       )}
 
@@ -84,6 +125,8 @@ function Debts() {
             <th>Phone</th>
             <th>Amount (RWF)</th>
             <th>Date</th>
+            <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -94,6 +137,20 @@ function Debts() {
               <td>{debt.phone}</td>
               <td>{debt.amount.toLocaleString()}</td>
               <td>{debt.date}</td>
+              <td style={{ color: debt.isPaid ? 'green' : 'red', fontWeight: 'bold' }}>
+                {debt.isPaid ? 'Paid' : 'Unpaid'}
+              </td>
+              <td>
+                <button onClick={() => togglePaidStatus(debt.id)} className="mark-paid-btn">
+                  {debt.isPaid ? 'Unmark Paid' : 'Mark as Paid'}
+                </button>{' '}
+                <button onClick={() => handleEdit(debt)} className="edit-btn">
+                  ✏️ Edit
+                </button>{' '}
+                <button onClick={() => handleDelete(debt.id)} className="delete-btn">
+                  🗑️ Delete
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

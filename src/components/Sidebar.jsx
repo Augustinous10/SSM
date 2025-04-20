@@ -11,7 +11,9 @@ import {
   FaUsers,
   FaBell,
   FaTruck,
-  FaSignOutAlt
+  FaSignOutAlt,
+  FaArrowCircleUp,     // NEW: For Income
+  FaArrowCircleDown    // NEW: For Expenses
 } from 'react-icons/fa';
 
 function Sidebar() {
@@ -35,6 +37,18 @@ function Sidebar() {
           <NavLink to="/sales" className={({ isActive }) => isActive ? 'active-link' : ''}>
             <FaHandHoldingUsd style={{ marginRight: '8px' }} />
             Sales
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/income" className={({ isActive }) => isActive ? 'active-link' : ''}>
+            <FaArrowCircleUp style={{ marginRight: '8px' }} />
+            Income
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/expenses" className={({ isActive }) => isActive ? 'active-link' : ''}>
+            <FaArrowCircleDown style={{ marginRight: '8px' }} />
+            Expenses
           </NavLink>
         </li>
         <li>
