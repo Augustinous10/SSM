@@ -1,6 +1,6 @@
 // src/components/Sidebar.js
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import './Sidebar.css';
 import {
   FaChartBar,
@@ -20,52 +20,52 @@ function Sidebar() {
       <h2><FaBoxOpen style={{ marginRight: '8px' }} /> HSM</h2>
       <ul className="sidebar-links">
         <li>
-          <Link to="/">
+          <NavLink to="/" className={({ isActive }) => isActive ? 'active-link' : ''}>
             <FaChartBar style={{ marginRight: '8px' }} />
             Dashboard
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/products">
+          <NavLink to="/products" className={({ isActive }) => isActive ? 'active-link' : ''}>
             <FaShoppingCart style={{ marginRight: '8px' }} />
             Products
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/sales">
+          <NavLink to="/sales" className={({ isActive }) => isActive ? 'active-link' : ''}>
             <FaHandHoldingUsd style={{ marginRight: '8px' }} />
             Sales
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/purchases">
+          <NavLink to="/purchases" className={({ isActive }) => isActive ? 'active-link' : ''}>
             <FaBoxOpen style={{ marginRight: '8px' }} />
             Purchases
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/debts">
+          <NavLink to="/debts" className={({ isActive }) => isActive ? 'active-link' : ''}>
             <FaFileInvoice style={{ marginRight: '8px' }} />
             Debts
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/clients">
+          <NavLink to="/clients" className={({ isActive }) => isActive ? 'active-link' : ''}>
             <FaUsers style={{ marginRight: '8px' }} />
             Clients
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/suppliers">
+          <NavLink to="/suppliers" className={({ isActive }) => isActive ? 'active-link' : ''}>
             <FaTruck style={{ marginRight: '8px' }} />
             Suppliers
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/notifications">
+          <NavLink to="/notifications" className={({ isActive }) => isActive ? 'active-link' : ''}>
             <FaBell style={{ marginRight: '8px' }} />
             Notifications
-          </Link>
+          </NavLink>
         </li>
       </ul>
 

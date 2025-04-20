@@ -9,8 +9,15 @@ function Purchases() {
     { id: 3, name: 'Tecno Spark 10', stock: 15 },
   ]);
 
+  const [suppliers] = useState([
+    { id: 1, name: 'MobileTech Ltd' },
+    { id: 2, name: 'SmartWorld Suppliers' },
+    { id: 3, name: 'Gadget Zone Inc' },
+  ]);
+
   const [purchases, setPurchases] = useState([]);
-  const [newPurchase, setNewPurchase] = useState({ productId: '', quantity: '' });
+  const [newPurchase, setNewPurchase] = useState({ productId: '', quantity: '', supplierId: '' });
+  const [showForm, setShowForm] = useState(false);
 
   const handleInputChange = (e) => {
     setNewPurchase({ ...newPurchase, [e.target.name]: e.target.value });
@@ -18,9 +25,10 @@ function Purchases() {
 
   const handleAddPurchase = () => {
     const productIndex = products.findIndex(p => p.id === parseInt(newPurchase.productId));
+    const supplier = suppliers.find(s => s.id === parseInt(newPurchase.supplierId));
     const quantity = parseInt(newPurchase.quantity);
 
-    if (productIndex !== -1 && quantity > 0) {
+    if (productIndex !== -1 && quantity > 0 && supplier) {
       const updatedProducts = [...products];
       updatedProducts[productIndex].stock += quantity;
       setProducts(updatedProducts);
@@ -28,12 +36,14 @@ function Purchases() {
       const newRecord = {
         id: purchases.length + 1,
         productName: updatedProducts[productIndex].name,
+        supplierName: supplier.name,
         quantity,
         date: new Date().toLocaleDateString(),
       };
 
       setPurchases([...purchases, newRecord]);
-      setNewPurchase({ productId: '', quantity: '' });
+      setNewPurchase({ productId: '', quantity: '', supplierId: '' });
+      setShowForm(false);
     }
   };
 
@@ -41,27 +51,40 @@ function Purchases() {
     <div className="purchases-container">
       <div className="purchases-header">
         <h1 className="purchases-title">📥 Purchases</h1>
+        <button className="toggle-form-btn" onClick={() => setShowForm(!showForm)}>
+          {showForm ? 'Hide Form' : '➕ Add New Purchase'}
+        </button>
       </div>
 
-      <div className="purchase-form">
-        <select name="productId" value={newPurchase.productId} onChange={handleInputChange}>
-          <option value="">-- Select Product --</option>
-          {products.map(product => (
-            <option key={product.id} value={product.id}>
-              {product.name} (Stock: {product.stock})
-            </option>
-          ))}
-        </select>
-        <input
-          type="number"
-          name="quantity"
-          placeholder="Quantity Purchased"
-          value={newPurchase.quantity}
-          onChange={handleInputChange}
-          min="1"
-        />
-        <button onClick={handleAddPurchase} className="add-purchase-btn">Add Purchase</button>
-      </div>
+      {showForm && (
+        <div className="purchase-form">
+          <select name="supplierId" value={newPurchase.supplierId} onChange={handleInputChange}>
+            <option value="">-- Select Supplier --</option>
+            {suppliers.map(supplier => (
+              <option key={supplier.id} value={supplier.id}>{supplier.name}</option>
+            ))}
+          </select>
+
+          <select name="productId" value={newPurchase.productId} onChange={handleInputChange}>
+            <option value="">-- Select Product --</option>
+            {products.map(product => (
+              <option key={product.id} value={product.id}>
+                {product.name} (Stock: {product.stock})
+              </option>
+            ))}
+          </select>
+
+          <input
+            type="number"
+            name="quantity"
+            placeholder="Quantity Purchased"
+            value={newPurchase.quantity}
+            onChange={handleInputChange}
+            min="1"
+          />
+          <button onClick={handleAddPurchase} className="add-purchase-btn">Add Purchase</button>
+        </div>
+      )}
 
       <table className="purchases-table">
         <thead>
@@ -69,6 +92,7 @@ function Purchases() {
             <th>#</th>
             <th>Product</th>
             <th>Quantity</th>
+            <th>Supplier</th>
             <th>Date</th>
           </tr>
         </thead>
@@ -78,6 +102,7 @@ function Purchases() {
               <td>{index + 1}</td>
               <td>{purchase.productName}</td>
               <td>{purchase.quantity}</td>
+              <td>{purchase.supplierName}</td>
               <td>{purchase.date}</td>
             </tr>
           ))}

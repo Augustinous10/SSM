@@ -11,6 +11,7 @@ function Sales() {
 
   const [sales, setSales] = useState([]);
   const [newSale, setNewSale] = useState({ productId: '', quantity: 1 });
+  const [showForm, setShowForm] = useState(false); // NEW STATE
 
   const handleInputChange = (e) => {
     setNewSale({ ...newSale, [e.target.name]: e.target.value });
@@ -30,6 +31,7 @@ function Sales() {
 
     setSales([...sales, saleRecord]);
     setNewSale({ productId: '', quantity: 1 });
+    setShowForm(false); // Hide the form again after adding
   };
 
   const getTotalFormatted = () => {
@@ -42,28 +44,36 @@ function Sales() {
     <div className="sales-container">
       <div className="sales-header">
         <h1 className="sales-title">📦 Sales</h1>
+        <button
+          onClick={() => setShowForm(!showForm)}
+          className="toggle-sale-form-btn"
+        >
+          {showForm ? 'Hide Form' : '➕ Add New Sale'}
+        </button>
       </div>
 
-      <div className="sale-form">
-        <select name="productId" value={newSale.productId} onChange={handleInputChange}>
-          <option value="">-- Select Product --</option>
-          {products.map(product => (
-            <option key={product.id} value={product.id}>
-              {product.name} ({product.stock} in stock)
-            </option>
-          ))}
-        </select>
-        <input
-          type="number"
-          name="quantity"
-          min="1"
-          value={newSale.quantity}
-          onChange={handleInputChange}
-          placeholder="Quantity"
-        />
-        <span className="total-display">{getTotalFormatted()}</span>
-        <button onClick={handleAddSale} className="add-sale-btn">Add Sale</button>
-      </div>
+      {showForm && (
+        <div className="sale-form">
+          <select name="productId" value={newSale.productId} onChange={handleInputChange}>
+            <option value="">-- Select Product --</option>
+            {products.map(product => (
+              <option key={product.id} value={product.id}>
+                {product.name} ({product.stock} in stock)
+              </option>
+            ))}
+          </select>
+          <input
+            type="number"
+            name="quantity"
+            min="1"
+            value={newSale.quantity}
+            onChange={handleInputChange}
+            placeholder="Quantity"
+          />
+          <span className="total-display">{getTotalFormatted()}</span>
+          <button onClick={handleAddSale} className="add-sale-btn">Add Sale</button>
+        </div>
+      )}
 
       <table className="sales-table">
         <thead>

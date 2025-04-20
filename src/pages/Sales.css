@@ -87,4 +87,20 @@
   .sales-table td {
     color: #253741;
   }
+  .toggle-sale-form-btn {
+    background-color: #00BF63;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+  }
+  
+  .toggle-sale-form-btn:hover {
+    background-color: #009e54;
+  }
+  
   

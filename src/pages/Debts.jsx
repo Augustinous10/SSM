@@ -3,92 +3,86 @@ import React, { useState } from 'react';
 import './Debts.css';
 
 function Debts() {
-  const [products] = useState([
-    { id: 1, name: 'Samsung Galaxy A14' },
-    { id: 2, name: 'iPhone 12 Pro' },
-    { id: 3, name: 'Tecno Spark 10' },
-  ]);
-
   const [debts, setDebts] = useState([]);
   const [newDebt, setNewDebt] = useState({
-    customer: '',
+    name: '',
     phone: '',
-    productId: '',
     amount: '',
+    date: '',
   });
+  const [showForm, setShowForm] = useState(false);
 
   const handleInputChange = (e) => {
     setNewDebt({ ...newDebt, [e.target.name]: e.target.value });
   };
 
   const handleAddDebt = () => {
-    const product = products.find(p => p.id === parseInt(newDebt.productId));
-    if (!product || !newDebt.customer || !newDebt.phone || !newDebt.amount) return;
-
-    const newRecord = {
+    const debtRecord = {
       id: debts.length + 1,
-      customer: newDebt.customer,
+      name: newDebt.name,
       phone: newDebt.phone,
-      productName: product.name,
       amount: parseFloat(newDebt.amount),
-      date: new Date().toLocaleDateString(),
+      date: newDebt.date,
     };
 
-    setDebts([...debts, newRecord]);
-    setNewDebt({ customer: '', phone: '', productId: '', amount: '' });
+    setDebts([...debts, debtRecord]);
+    setNewDebt({ name: '', phone: '', amount: '', date: '' });
+    setShowForm(false);
   };
 
   return (
     <div className="debts-container">
-      <h1 className="debts-title">💳 Debts</h1>
-
-      <div className="debt-form">
-        <input
-          type="text"
-          name="customer"
-          placeholder="Customer Name"
-          value={newDebt.customer}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          name="phone"
-          placeholder="Phone Number"
-          value={newDebt.phone}
-          onChange={handleInputChange}
-        />
-        <select
-          name="productId"
-          value={newDebt.productId}
-          onChange={handleInputChange}
+      <div className="debts-header">
+        <h1 className="debts-title">💸 Debts</h1>
+        <button
+          onClick={() => setShowForm(!showForm)}
+          className="toggle-debt-form-btn"
         >
-          <option value="">-- Select Product --</option>
-          {products.map((product) => (
-            <option key={product.id} value={product.id}>
-              {product.name}
-            </option>
-          ))}
-        </select>
-        <input
-          type="number"
-          name="amount"
-          placeholder="Amount (RWF)"
-          value={newDebt.amount}
-          onChange={handleInputChange}
-        />
-        <button className="add-debt-btn" onClick={handleAddDebt}>
-          Add Debt
+          {showForm ? 'Cancel' : '➕ Add New Debt'}
         </button>
       </div>
+
+      {showForm && (
+        <div className="debt-form">
+          <input
+            type="text"
+            name="name"
+            value={newDebt.name}
+            onChange={handleInputChange}
+            placeholder="Debtor's Name"
+          />
+          <input
+            type="tel"
+            name="phone"
+            value={newDebt.phone}
+            onChange={handleInputChange}
+            placeholder="Phone Number"
+          />
+          <input
+            type="number"
+            name="amount"
+            value={newDebt.amount}
+            onChange={handleInputChange}
+            placeholder="Amount (RWF)"
+          />
+          <input
+            type="date"
+            name="date"
+            value={newDebt.date}
+            onChange={handleInputChange}
+            placeholder="Date"
+          />
+          <button onClick={handleAddDebt} className="add-debt-btn">Add Debt</button>
+        </div>
+      )}
 
       <table className="debts-table">
         <thead>
           <tr>
             <th>#</th>
-            <th>Customer</th>
+            <th>Debtor</th>
             <th>Phone</th>
-            <th>Product</th>
-            <th>Amount</th>
+            <th>Amount (RWF)</th>
             <th>Date</th>
           </tr>
         </thead>
@@ -96,10 +90,9 @@ function Debts() {
           {debts.map((debt, index) => (
             <tr key={debt.id}>
               <td>{index + 1}</td>
-              <td>{debt.customer}</td>
+              <td>{debt.name}</td>
               <td>{debt.phone}</td>
-              <td>{debt.productName}</td>
-              <td>RWF {debt.amount.toLocaleString()}</td>
+              <td>{debt.amount.toLocaleString()}</td>
               <td>{debt.date}</td>
             </tr>
           ))}

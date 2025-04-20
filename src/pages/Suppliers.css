@@ -67,4 +67,7 @@
   .suppliers-table td {
     color: #555;
   }
+  .add-supplier-btn {
+    margin-bottom: 1rem; /* 👈 Add this to push table away */
+  }
   

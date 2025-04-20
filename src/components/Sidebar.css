@@ -60,3 +60,10 @@
 .logout-button:hover {
   background-color: #00BF63;
 }
+.sidebar-links li a.active-link {
+  color: #00BF63;
+  font-weight: bold;
+  background-color: #1d2a30;
+  padding: 10px;
+  border-radius: 6px;
+}
