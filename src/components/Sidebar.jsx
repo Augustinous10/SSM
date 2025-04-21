@@ -12,14 +12,16 @@ import {
   FaBell,
   FaTruck,
   FaSignOutAlt,
-  FaArrowCircleUp,     // NEW: For Income
-  FaArrowCircleDown    // NEW: For Expenses
+  FaArrowCircleUp,     // For Income
+  FaArrowCircleDown,   // For Expenses
+  FaClipboardList      // ✅ For Report
 } from 'react-icons/fa';
 
 function Sidebar() {
   return (
     <div className="sidebar">
       <h2><FaBoxOpen style={{ marginRight: '8px' }} /> HSM</h2>
+
       <ul className="sidebar-links">
         <li>
           <NavLink to="/" className={({ isActive }) => isActive ? 'active-link' : ''}>
@@ -49,6 +51,12 @@ function Sidebar() {
           <NavLink to="/expenses" className={({ isActive }) => isActive ? 'active-link' : ''}>
             <FaArrowCircleDown style={{ marginRight: '8px' }} />
             Expenses
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/report" className={({ isActive }) => isActive ? 'active-link' : ''}>
+            <FaClipboardList style={{ marginRight: '8px' }} />
+            Report
           </NavLink>
         </li>
         <li>
@@ -83,10 +91,13 @@ function Sidebar() {
         </li>
       </ul>
 
-      <button className="logout-button">
-        <FaSignOutAlt style={{ marginRight: '8px' }} />
-        Logout
-      </button>
+      {/* Footer for logout button to stay at the bottom */}
+      <div className="sidebar-footer">
+        <button className="logout-button">
+          <FaSignOutAlt style={{ marginRight: '8px' }} />
+          Logout
+        </button>
+      </div>
     </div>
   );
 }

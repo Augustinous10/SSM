@@ -4,6 +4,7 @@ import './Income.css';
 
 function Income() {
   const [incomeData, setIncomeData] = useState([]);
+  const [showForm, setShowForm] = useState(false); // Controls form visibility
   const [form, setForm] = useState({
     source: '',
     amount: '',
@@ -26,32 +27,38 @@ function Income() {
     <div className="income-container">
       <h2>Income Records</h2>
 
-      <form onSubmit={handleSubmit} className="income-form">
-        <input
-          type="text"
-          name="source"
-          placeholder="Income Source"
-          value={form.source}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="number"
-          name="amount"
-          placeholder="Amount (RWF)"
-          value={form.amount}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="date"
-          name="date"
-          value={form.date}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">Add Income</button>
-      </form>
+      <button onClick={() => setShowForm(!showForm)} className="toggle-form-btn">
+        {showForm ? 'Hide Form' : 'Add New Income'}
+      </button>
+
+      {showForm && (
+        <form onSubmit={handleSubmit} className="income-form">
+          <input
+            type="text"
+            name="source"
+            placeholder="Income Source"
+            value={form.source}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="number"
+            name="amount"
+            placeholder="Amount (RWF)"
+            value={form.amount}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="date"
+            name="date"
+            value={form.date}
+            onChange={handleChange}
+            required
+          />
+          <button type="submit">Add Income</button>
+        </form>
+      )}
 
       <table className="income-table">
         <thead>
@@ -67,7 +74,7 @@ function Income() {
             <tr key={index}>
               <td>{index + 1}</td>
               <td>{item.source}</td>
-              <td>{item.amount}</td>
+              <td>{parseFloat(item.amount).toLocaleString()}</td>
               <td>{item.date}</td>
             </tr>
           ))}

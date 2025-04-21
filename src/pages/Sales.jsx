@@ -1,71 +1,72 @@
-// src/pages/Sales.js
 import React, { useState } from 'react';
 import './Sales.css';
 
+const initialProducts = [
+  { id: 1, name: 'Samsung Galaxy A14', stock: 23, price: 180000 },
+  { id: 2, name: 'iPhone 12 Pro', stock: 7, price: 600000 },
+  { id: 3, name: 'Tecno Spark 10', stock: 15, price: 120000 },
+];
+
 function Sales() {
-  const [products] = useState([
-    { id: 1, name: 'Samsung Galaxy A14', stock: 23, price: 180000 },
-    { id: 2, name: 'iPhone 12 Pro', stock: 7, price: 600000 },
-    { id: 3, name: 'Tecno Spark 10', stock: 15, price: 120000 },
-    { id: 4, name: 'pixel Spark 10', stock: 31, price: 120000 },
-    { id: 5, name: 'infinix Spark 10', stock: 30, price: 120000 },
-  ]);
-
+  const [products, setProducts] = useState(initialProducts);
   const [sales, setSales] = useState([]);
-  const [newSale, setNewSale] = useState({
+  const [showForm, setShowForm] = useState(false); // Toggle control
+  const [form, setForm] = useState({
     productId: '',
-    quantity: 1,
-    paymentMethod: 'Cash',
+    quantity: '',
+    client: '',
+    date: new Date().toISOString().split('T')[0],
   });
-  const [showForm, setShowForm] = useState(false);
 
-  const handleInputChange = (e) => {
-    setNewSale({ ...newSale, [e.target.name]: e.target.value });
+  const selectedProduct = products.find(p => p.id === parseInt(form.productId));
+  const total = selectedProduct ? selectedProduct.price * form.quantity : 0;
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleAddSale = () => {
-    const product = products.find(p => p.id === parseInt(newSale.productId));
-    const quantity = parseInt(newSale.quantity);
-    const total = product.price * quantity;
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-    const saleRecord = {
+    const productIndex = products.findIndex(p => p.id === parseInt(form.productId));
+    const quantity = parseInt(form.quantity);
+
+    if (productIndex === -1 || quantity <= 0 || quantity > products[productIndex].stock) return;
+
+    const updatedProducts = [...products];
+    updatedProducts[productIndex].stock -= quantity;
+
+    const newSale = {
       id: sales.length + 1,
-      productName: product.name,
+      product: updatedProducts[productIndex].name,
       quantity,
-      total,
-      paymentMethod: newSale.paymentMethod,
+      price: updatedProducts[productIndex].price,
+      total: updatedProducts[productIndex].price * quantity,
+      client: form.client || 'Walk-in',
+      date: form.date,
     };
 
-    setSales([...sales, saleRecord]);
-    setNewSale({ productId: '', quantity: 1, paymentMethod: 'Cash' });
-    setShowForm(false);
-  };
-
-  const getTotalFormatted = () => {
-    const product = products.find(p => p.id === parseInt(newSale.productId));
-    const quantity = parseInt(newSale.quantity);
-    return product ? `RWF ${(product.price * quantity).toLocaleString()}` : 'RWF 0';
+    setSales([...sales, newSale]);
+    setProducts(updatedProducts);
+    setForm({ productId: '', quantity: '', client: '', date: new Date().toISOString().split('T')[0] });
+    setShowForm(false); // Hide form after submit
   };
 
   return (
     <div className="sales-container">
-      <div className="sales-header">
-        <h1 className="sales-title">📦 Sales</h1>
-        <button
-          onClick={() => setShowForm(!showForm)}
-          className="toggle-sale-form-btn"
-        >
-          {showForm ? 'Cancel' : '➕ Add New Sale'}
-        </button>
-      </div>
+      <h2>Sales Records</h2>
+
+      <button onClick={() => setShowForm(!showForm)} className="toggle-button">
+        {showForm ? 'Cancel' : 'New Sale'}
+      </button>
 
       {showForm && (
-        <div className="sale-form">
-          <select name="productId" value={newSale.productId} onChange={handleInputChange}>
-            <option value="">-- Select Product --</option>
-            {products.map(product => (
+        <form onSubmit={handleSubmit} className="sales-form">
+          <select name="productId" value={form.productId} onChange={handleChange} required>
+            <option value="">Select Product</option>
+            {products.map((product) => (
               <option key={product.id} value={product.id}>
-                {product.name} ({product.stock} in stock)
+                {product.name} (Stock: {product.stock})
               </option>
             ))}
           </select>
@@ -73,23 +74,31 @@ function Sales() {
           <input
             type="number"
             name="quantity"
-            min="1"
-            value={newSale.quantity}
-            onChange={handleInputChange}
             placeholder="Quantity"
+            value={form.quantity}
+            onChange={handleChange}
+            required
           />
 
-          <select name="paymentMethod" value={newSale.paymentMethod} onChange={handleInputChange}>
-            <option value="Cash">Cash</option>
-            <option value="MOMO">MOMO</option>
-            <option value="Airtel Money">Airtel Money</option>
-            <option value="MOMO Pay">MOMO Pay</option>
-            <option value="Bank">Bank</option>
-          </select>
+          <input
+            type="text"
+            name="client"
+            placeholder="Client Name (Optional)"
+            value={form.client}
+            onChange={handleChange}
+          />
 
-          <span className="total-display">{getTotalFormatted()}</span>
-          <button onClick={handleAddSale} className="add-sale-btn">Add Sale</button>
-        </div>
+          <input
+            type="date"
+            name="date"
+            value={form.date}
+            onChange={handleChange}
+            required
+          />
+
+          <div className="sales-total">Total: RWF {total.toLocaleString()}</div>
+          <button type="submit">Complete Sale</button>
+        </form>
       )}
 
       <table className="sales-table">
@@ -98,18 +107,22 @@ function Sales() {
             <th>#</th>
             <th>Product</th>
             <th>Quantity</th>
+            <th>Price (RWF)</th>
             <th>Total (RWF)</th>
-            <th>Payment Method</th>
+            <th>Client</th>
+            <th>Date</th>
           </tr>
         </thead>
         <tbody>
           {sales.map((sale, index) => (
-            <tr key={sale.id}>
-              <td>{index + 1}</td>
-              <td>{sale.productName}</td>
+            <tr key={index}>
+              <td>{sale.id}</td>
+              <td>{sale.product}</td>
               <td>{sale.quantity}</td>
+              <td>{sale.price.toLocaleString()}</td>
               <td>{sale.total.toLocaleString()}</td>
-              <td>{sale.paymentMethod}</td>
+              <td>{sale.client}</td>
+              <td>{sale.date}</td>
             </tr>
           ))}
         </tbody>

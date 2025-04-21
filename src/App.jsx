@@ -12,6 +12,7 @@ import Sales from './pages/Sales';
 import Purchases from './pages/Purchases';
 import Debts from './pages/Debts';
 import Clients from './pages/Clients';
+import Report from './pages/Report';
 import Notifications from './pages/Notifications';
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
             <Route path="/purchases" element={<Purchases />} />
             <Route path="/debts" element={<Debts />} />
             <Route path="/clients" element={<Clients />} />
+            <Route path="/report" element={<Report />} />
             <Route path="/notifications" element={<Notifications />} />
           </Routes>
         </div>
