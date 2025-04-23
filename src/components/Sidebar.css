@@ -1,4 +1,8 @@
+/* Sidebar stays fixed on the left */
 .sidebar {
+  position: fixed; /* ✅ Keeps it stuck on the left */
+  top: 0;
+  left: 0;
   width: 220px;
   height: 100vh;
   background-color: #253741;
@@ -8,7 +12,9 @@
   padding: 20px;
   box-sizing: border-box;
   overflow-y: auto;
+  z-index: 1000; /* Optional: keeps it above other elements */
 }
+
 
 .sidebar h2 {
   color: #00BF63;

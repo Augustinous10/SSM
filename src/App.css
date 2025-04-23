@@ -37,3 +37,6 @@
     transform: rotate(360deg);
   }
 }
+<div style={{ marginLeft: '220px', padding: '20px', flex: 1 }}>
+  {/* Main routed content goes here */}
+</div>

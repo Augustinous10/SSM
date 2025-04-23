@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+
 import './Dashboard.css';
 
 const sampleDebts = [
@@ -36,6 +37,7 @@ function Dashboard() {
   const [filteredExpenses, setFilteredExpenses] = useState([]);
   const [filter, setFilter] = useState('1month');
   const [customRange, setCustomRange] = useState({ from: '', to: '' });
+
 
   const applyFilters = useCallback(() => {
     const now = new Date();

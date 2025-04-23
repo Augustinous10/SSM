@@ -9,6 +9,7 @@ function Debts() {
     phone: '',
     amount: '',
     date: '',
+    dueDate: '', // NEW FIELD
   });
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -18,29 +19,30 @@ function Debts() {
   };
 
   const handleAddDebt = () => {
-    if (!newDebt.name || !newDebt.amount || !newDebt.date) return;
+    if (!newDebt.name || !newDebt.amount || !newDebt.date || !newDebt.dueDate) return;
 
     if (editingId) {
-      // Update existing
       const updatedDebts = debts.map((debt) =>
-        debt.id === editingId ? { ...debt, ...newDebt, amount: parseFloat(newDebt.amount) } : debt
+        debt.id === editingId
+          ? { ...debt, ...newDebt, amount: parseFloat(newDebt.amount) }
+          : debt
       );
       setDebts(updatedDebts);
       setEditingId(null);
     } else {
-      // Add new
       const debtRecord = {
         id: debts.length + 1,
         name: newDebt.name,
         phone: newDebt.phone,
         amount: parseFloat(newDebt.amount),
         date: newDebt.date,
+        dueDate: newDebt.dueDate,
         isPaid: false,
       };
       setDebts([...debts, debtRecord]);
     }
 
-    setNewDebt({ name: '', phone: '', amount: '', date: '' });
+    setNewDebt({ name: '', phone: '', amount: '', date: '', dueDate: '' });
     setShowForm(false);
   };
 
@@ -54,6 +56,7 @@ function Debts() {
       phone: debt.phone,
       amount: debt.amount,
       date: debt.date,
+      dueDate: debt.dueDate,
     });
     setEditingId(debt.id);
     setShowForm(true);
@@ -74,11 +77,11 @@ function Debts() {
           onClick={() => {
             setShowForm(!showForm);
             setEditingId(null);
-            setNewDebt({ name: '', phone: '', amount: '', date: '' });
+            setNewDebt({ name: '', phone: '', amount: '', date: '', dueDate: '' });
           }}
           className="toggle-debt-form-btn"
         >
-          {showForm ? 'Hide Form' : '➕ Add New Debt'}
+          {showForm ? 'Cancel' : '➕ Add New Debt'}
         </button>
       </div>
 
@@ -111,6 +114,13 @@ function Debts() {
             value={newDebt.date}
             onChange={handleInputChange}
           />
+          <input
+            type="date"
+            name="dueDate"
+            value={newDebt.dueDate}
+            onChange={handleInputChange}
+            placeholder="Date to Pay"
+          />
           <button onClick={handleAddDebt} className="add-debt-btn">
             {editingId ? 'Update Debt' : 'Add Debt'}
           </button>
@@ -124,7 +134,8 @@ function Debts() {
             <th>Debtor</th>
             <th>Phone</th>
             <th>Amount (RWF)</th>
-            <th>Date</th>
+            <th>Borrowed Date</th>
+            <th>Due Date</th>
             <th>Status</th>
             <th>Actions</th>
           </tr>
@@ -137,6 +148,7 @@ function Debts() {
               <td>{debt.phone}</td>
               <td>{debt.amount.toLocaleString()}</td>
               <td>{debt.date}</td>
+              <td>{debt.dueDate}</td>
               <td style={{ color: debt.isPaid ? 'green' : 'red', fontWeight: 'bold' }}>
                 {debt.isPaid ? 'Paid' : 'Unpaid'}
               </td>

@@ -16,7 +16,7 @@ function Purchases() {
   ]);
 
   const [purchases, setPurchases] = useState([]);
-  const [newPurchase, setNewPurchase] = useState({ productId: '', quantity: '', supplierId: '' });
+  const [newPurchase, setNewPurchase] = useState({ productId: '', quantity: '', supplierId: '', unitPrice: '' });
   const [showForm, setShowForm] = useState(false);
 
   const handleInputChange = (e) => {
@@ -27,8 +27,9 @@ function Purchases() {
     const productIndex = products.findIndex(p => p.id === parseInt(newPurchase.productId));
     const supplier = suppliers.find(s => s.id === parseInt(newPurchase.supplierId));
     const quantity = parseInt(newPurchase.quantity);
+    const unitPrice = parseFloat(newPurchase.unitPrice);
 
-    if (productIndex !== -1 && quantity > 0 && supplier) {
+    if (productIndex !== -1 && quantity > 0 && unitPrice > 0 && supplier) {
       const updatedProducts = [...products];
       updatedProducts[productIndex].stock += quantity;
       setProducts(updatedProducts);
@@ -38,11 +39,13 @@ function Purchases() {
         productName: updatedProducts[productIndex].name,
         supplierName: supplier.name,
         quantity,
+        unitPrice,
+        totalCost: quantity * unitPrice,
         date: new Date().toLocaleDateString(),
       };
 
       setPurchases([...purchases, newRecord]);
-      setNewPurchase({ productId: '', quantity: '', supplierId: '' });
+      setNewPurchase({ productId: '', quantity: '', supplierId: '', unitPrice: '' });
       setShowForm(false);
     }
   };
@@ -82,6 +85,17 @@ function Purchases() {
             onChange={handleInputChange}
             min="1"
           />
+
+          <input
+            type="number"
+            name="unitPrice"
+            placeholder="Unit Price"
+            value={newPurchase.unitPrice}
+            onChange={handleInputChange}
+            min="0.01"
+            step="0.01"
+          />
+
           <button onClick={handleAddPurchase} className="add-purchase-btn">Add Purchase</button>
         </div>
       )}
@@ -92,6 +106,8 @@ function Purchases() {
             <th>#</th>
             <th>Product</th>
             <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Total Cost</th>
             <th>Supplier</th>
             <th>Date</th>
           </tr>
@@ -102,6 +118,8 @@ function Purchases() {
               <td>{index + 1}</td>
               <td>{purchase.productName}</td>
               <td>{purchase.quantity}</td>
+              <td>{purchase.unitPrice.toFixed(2)} RWF</td>
+              <td>{purchase.totalCost.toFixed(2)} RWF</td>
               <td>{purchase.supplierName}</td>
               <td>{purchase.date}</td>
             </tr>
