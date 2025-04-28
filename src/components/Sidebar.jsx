@@ -84,6 +84,12 @@ function Sidebar() {
           </NavLink>
         </li>
         <li>
+          <NavLink to="/PettyCash" className={({ isActive }) => isActive ? 'active-link' : ''}>
+            <FaTruck style={{ marginRight: '8px' }} />
+            Petty Cash
+          </NavLink>
+        </li>
+        <li>
           <NavLink to="/notifications" className={({ isActive }) => isActive ? 'active-link' : ''}>
             <FaBell style={{ marginRight: '8px' }} />
             Notifications
